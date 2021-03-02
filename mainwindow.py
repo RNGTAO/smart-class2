@@ -140,7 +140,7 @@ rowcount()      返回数据条数或影响行数
 close()         关闭游标对象
 """
 
-conn = pymysql.connect(host='127.0.0.1',port=3306,user='root',passwd='feng',db="classkq",charset='utf8')
+conn = pymysql.connect(host='127.0.0.1',port=3306,user='root',passwd='1060800164',db="graduation",charset='utf8')
 cursor = conn.cursor()
 cap = cv2.VideoCapture(0)
 app = QtWidgets.QApplication(sys.argv)
