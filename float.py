@@ -10,7 +10,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui  import *
 
 import sys
-
 class Ui_Dialogfloat(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
