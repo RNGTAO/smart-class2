@@ -157,6 +157,7 @@ def showcamera():
         if (cap.isOpened()):
             # get a frame
             ret, img = cap.read()
+            #获取图片的长和宽
             height, width, bytesPerComponent = img.shape
             bytesPerLine = bytesPerComponent * width
             # 变换彩色空间顺序
@@ -167,8 +168,10 @@ def showcamera():
 
 
 threads = []
+#线程一
 t1 = threading.Thread(target=classCheck2.checkface,args=(cap,ui,conn))
 threads.append(t1)
+#线程二
 t2 = threading.Thread(target=showcamera)
 threads.append(t2)
 
