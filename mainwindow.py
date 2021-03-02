@@ -131,6 +131,7 @@ commit()        提交当前事务
 rollback()      回滚当前事务
 close()         关闭连接
 
+
 cursor对象支持的方法
 execute(op)     执行一个数据库的查询命令
 fetchone()      取得结果集的下一行
