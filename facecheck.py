@@ -4,12 +4,8 @@ from urllib.parse import urlencode
 import cv2
 import CONFIG
 
-
-
-
-
 def fa_check(picpath):
-    access_token = CONFIG.access_token;
+    access_token = CONFIG.access_token
 
 
     http=urllib3.PoolManager()
