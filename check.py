@@ -146,17 +146,19 @@ class Ui_Dialog_check(object):
         self.beijing.setPixmap(pix)
 
         global conn
-        conn = pymysql.connect(host=CONFIG.host, port=3306, user='root', passwd=CONFIG.hostps, db="classkq",
-                               charset='utf8');
+        conn = pymysql.connect(host=CONFIG.host, port=3306, user='root', passwd=CONFIG.hostps, db=CONFIG.db,
+                               charset='utf8')
         cursor = conn.cursor()
         sql = "select * from student"
         cursor.execute(sql)
         data = cursor.fetchall()
+        # print(type(data))
         datanum = 0
         stunum = len(data)
         sturow = int(stunum / 7) + 1
         for i in range(0, sturow):
             for j in range(0, 7):
+                # print(data)
                 self.tableWidget.setItem(i, j, QtWidgets.QTableWidgetItem(data[datanum][1]))
                 if (datanum == (stunum - 1)):
                     break

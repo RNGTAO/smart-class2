@@ -260,16 +260,14 @@ def showfloat():
 
 
 
-
-
-
-
-
 if __name__ == '__main__':
 
-    conn = pymysql.connect(host=CONFIG.host, port=3306, user='root', passwd=CONFIG.hostps, db="classkq", charset='utf8');
-    cap = cv2.VideoCapture(CONFIG.capnum)#开启摄像头
-    app = QApplication(sys.argv)#app
+    #数据库连接(远程数据库)
+    conn = pymysql.connect(host=CONFIG.host, port=3306, user='root', passwd=CONFIG.hostps, db=CONFIG.db, charset='utf8')
+    #开启摄像头
+    cap = cv2.VideoCapture(CONFIG.capnum)
+    #app
+    app = QApplication(sys.argv)
 
     #考勤窗口初始化
    # MainWindow =  QtWidgets.QMainWindow()

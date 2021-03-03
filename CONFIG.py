@@ -3,9 +3,15 @@
 #hostps = "feng"
 
 #云服务器
-host = "119.29.173.243"
-hostps = "fengyuancheng"
+# host = "119.29.173.243"
+host="127.0.0.1"
+# hostps = "fengyuancheng"
+hostps="1060800164"
 classroomNO = "钟海楼03021"
+
+#数据库名称
+db="graduation"
+
 
 #摄像头参数
 capnum = 0

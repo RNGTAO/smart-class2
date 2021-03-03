@@ -116,6 +116,7 @@ class Ui_Dialoglesson(object):
 
 
     def retranslateUi(self, Dialog):
+        global j
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         __sortingEnabled = self.tableWidget.isSortingEnabled()
@@ -171,8 +172,8 @@ class Ui_Dialoglesson(object):
 
         self.comboBox.currentIndexChanged.connect(self.comchange)
 
-        conn = pymysql.connect(host=CONFIG.host, port=3306, user='root', passwd=CONFIG.hostps, db="classkq",
-                               charset='utf8');
+        conn = pymysql.connect(host=CONFIG.host, port=3306, user='root', passwd=CONFIG.hostps, db=CONFIG.db,
+                               charset='utf8')
         cursor = conn.cursor()
         sql = "select * from classuse WHERE classroom = '钟海楼' AND classno = '03021' AND time = '第一周'"
         cursor.execute(sql)
