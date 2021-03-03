@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file 'repair.ui'
-#
 # Created by: PyQt5 UI code generator 5.6
-#
 # WARNING! All changes made in this file will be lost!
+"""
+教室保修模块
+改模块实现了对教室物品的报修,并将保修信息存到后台数据库
+改模块类中有四个函数
+"""
 
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 import sys
-from PyQt5.QtGui  import *
+from PyQt5.QtGui import *
 import pymysql
 import CONFIG
 
@@ -17,12 +18,11 @@ import CONFIG
 class Ui_Dialog_repair(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
+        # 设置窗口的大小(长和宽)
         Dialog.resize(1133, 824)
         self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setGeometry(QtCore.QRect(40, 40, 1051, 701))
-        self.label_2.setStyleSheet("QLabel{\n"
-"background:white;;\n"
-"}")
+        self.label_2.setStyleSheet("QLabel{\n""background:white;;\n""}")
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
         self.pushButton = QtWidgets.QPushButton(Dialog)
@@ -67,10 +67,8 @@ class Ui_Dialog_repair(object):
         self.textEdit = QtWidgets.QTextEdit(Dialog)
         self.textEdit.setGeometry(QtCore.QRect(90, 400, 961, 311))
         self.textEdit.setObjectName("textEdit")
-
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-
         self.beijing = QtWidgets.QLabel(Dialog)
         self.beijing.setGeometry(QtCore.QRect(0, 0, 1197, 850))
         self.beijing.setText("")
@@ -91,25 +89,32 @@ class Ui_Dialog_repair(object):
         self.textEdit.raise_()
         self.pushButton.raise_()
         self.pushButton_2.raise_()
-
+        """
+        # 读取图片
         pix = QPixmap('G:/tiaozhanbei/beijing4.jpg')
+        # 显示图片
         self.beijing.setPixmap(pix)
-
+        QPixmap用于在标签或者按钮上面显示图像
+        QPixmap支持的图像格式有BMP、GIF、JPG、JPEG、PNG、PBM、PGM、PPM、XBM、XPM等
+        """
+        self.beijing.setPixmap(QPixmap(CONFIG.address))
         op = QtWidgets.QGraphicsOpacityEffect()
         op.setOpacity(0.4)
         self.label_2.setGraphicsEffect(op)
         self.label_2.setAutoFillBackground(True)
-
         self.pushButton.clicked.connect(self.register)
         self.pushButton_2.clicked.connect(self.cleanall)
 
 
-
-
+    """
+    对窗口当中的输入框进行设置
+    """
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.lineEdit.setText(CONFIG.classroomNO)
+        # 设置窗口名称
+        Dialog.setWindowTitle(_translate("Dialog", "教室维修申请"))
+        # self.lineEdit.setText(CONFIG.classroomAddress)
+        self.lineEdit.setPlaceholderText(CONFIG.classroomAddress)
         self.pushButton.setText(_translate("Dialog", "提交"))
         self.pushButton_2.setText(_translate("Dialog", "返回"))
         self.label.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-size:14pt;\">教室号：</span></p></body></html>"))
@@ -119,6 +124,7 @@ class Ui_Dialog_repair(object):
         self.label_7.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-size:14pt;\">报修物品种类：</span></p></body></html>"))
         self.label_8.setText(_translate("Dialog", "<html><head/><body><p><span style=\" font-size:14pt;\">详情补充：</span></p></body></html>"))
 
+# 该模块还需要对每一个文本框的输入进行验证
 
 
     def register(self):
@@ -128,7 +134,7 @@ class Ui_Dialog_repair(object):
         situation = self.lineEdit_5.text()
         count = self.lineEdit_6.text()
         remark = self.textEdit.toPlainText()
-        conn = pymysql.connect(host=CONFIG.host, port=3306, user='root', passwd=CONFIG.hostps, db="classkq",charset='utf8');
+        conn = pymysql.connect(host=CONFIG.host, port=3306, user='root', passwd=CONFIG.hostps, db=CONFIG.db,charset='utf8')
         cursor = conn.cursor()
         sql = "INSERT INTO repair (classroomNO,objectname,type,situation,count,remark,state,time) value ('"+classroomNO+"','" + objectname + "','" + type + "','" + situation + "','" + count + "','" + remark + "','待处理',now())"
         print(sql)
