@@ -6,7 +6,7 @@
 # host = "119.29.173.243"
 host="127.0.0.1"
 # hostps = "fengyuancheng"
-hostps="15995648"
+hostps="549843"
 
 # repair模块中的教室地址classroomNo
 classroomAddress = "例如:3302"

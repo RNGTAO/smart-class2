@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 # Form implementation generated from reading ui file 'repair.ui'
 # Created by: PyQt5 UI code generator 5.6
-# WARNING! All changes made in this file will be lost!
 """
 教室保修模块
 改模块实现了对教室物品的报修,并将保修信息存到后台数据库
-改模块类中有四个函数
+该模块类中有四个函数
+"""
+"""
+该模块已经测试完毕，能够正常运行各个方法
 """
 
 from PyQt5 import QtCore, QtWidgets
@@ -91,7 +93,6 @@ class Ui_Dialog_repair(object):
         self.pushButton_2.raise_()
         """
         # 读取图片
-        pix = QPixmap('G:/tiaozhanbei/beijing4.jpg')
         # 显示图片
         self.beijing.setPixmap(pix)
         QPixmap用于在标签或者按钮上面显示图像
@@ -102,10 +103,10 @@ class Ui_Dialog_repair(object):
         op.setOpacity(0.4)
         self.label_2.setGraphicsEffect(op)
         self.label_2.setAutoFillBackground(True)
+        # 提交按钮点击后执行register方法，将报修数据提交到数据库
         self.pushButton.clicked.connect(self.register)
+        # 点击返回按钮将会清空当前所有输入框中的内容
         self.pushButton_2.clicked.connect(self.cleanall)
-
-
     """
     对窗口当中的输入框进行设置
     """
@@ -126,27 +127,46 @@ class Ui_Dialog_repair(object):
 
 # 该模块还需要对每一个文本框的输入进行验证
 
-
+# 测试每一个输入框的值是否会出现乱码等现象
     def register(self):
-        classroomNO = self.lineEdit.text()
+        # 教室地址
+        classroomAddress = self.lineEdit.text()
+        # print(classroomAddress)
+        # 保修物品名称
         objectname = self.lineEdit_2.text()
-        type = self.lineEdit_3.text()
+        # print(type(objectname))
+        # print(objectname)
+        # 保修物品种类
+        type1= self.lineEdit_3.text()
+        # 损坏情况
         situation = self.lineEdit_5.text()
+        print(type(situation))
+        # print(situation)
+        # 损坏数量
         count = self.lineEdit_6.text()
+        # print(count)
+        # 详情补充
         remark = self.textEdit.toPlainText()
-        conn = pymysql.connect(host=CONFIG.host, port=3306, user='root', passwd=CONFIG.hostps, db=CONFIG.db,charset='utf8')
+        # print(remark)
+        # 数据库连接，连接数据库中的repair表
+        conn = pymysql.connect(host=CONFIG.host, port=3306, user='root', passwd=CONFIG.hostps, db=CONFIG.db, charset='utf8')
         cursor = conn.cursor()
-        sql = "INSERT INTO repair (classroomNO,objectname,type,situation,count,remark,state,time) value ('"+classroomNO+"','" + objectname + "','" + type + "','" + situation + "','" + count + "','" + remark + "','待处理',now())"
+        sql = "INSERT INTO repair (classroomAddress,objectname,type,situation,Problem_Count,remark,state) values ('%s','%s','%s','%s','%s','%s','%s')" % \
+              (classroomAddress,objectname,type1,situation,count,remark,'未处理')
         print(sql)
         try:
             # 执行sql语句
             cursor.execute(sql)
-            # 提交到数据库执行`
+            print("问题成功提交")
+            # 提交到数据库执行
             conn.commit()
-        except:
+        except Exception as e:
             # 如果发生错误则回滚
+            print("数据提交失败")
+            print(e)
             conn.rollback()
         self.cleanall()
+
 
     def cleanall(self):
         self.lineEdit.setText("")
@@ -155,14 +175,6 @@ class Ui_Dialog_repair(object):
         self.lineEdit_5.setText("")
         self.lineEdit_6.setText("")
         self.textEdit.setText("")
-
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
