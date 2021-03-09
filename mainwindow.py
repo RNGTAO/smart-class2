@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import threading
 import cv2
 import sys
@@ -7,25 +6,23 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QFont, QPixmap, QPainter, QImage
 import classCheck2
 import pymysql
+import CONFIG
 
 class Ui_MainWindow(object):
 
-
+    #创建人脸检测UI窗口
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1073, 787)
-        MainWindow.setStyleSheet("QPushButton\n"
-"{\n"
-"    background-color:yellow;\n"
-"}")
+        # 设置人脸检测窗口的背景颜色
+        MainWindow.setStyleSheet("background-color:white;")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(90, 50, 351, 381))
-        self.label.setStyleSheet("QLabel\n"
-"{\n"
-"    background-color: white\n"
-"}")
+        # self.label.setStyleSheet("QLabel""{""background-color: white""}")
+        # 设置人脸捕捉窗口初始时刻的颜色背景
+        self.label.setStyleSheet("background-color: red;")
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(620, 80, 101, 51))
@@ -65,26 +62,16 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
 
-
-
-
-
-
-
-
-
-
-
+    #创建窗口中的标签
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "                   摄像头"))
+        self.label.setText(_translate("MainWindow", "                  摄像头"))
         self.label_2.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">姓名：</span></p></body></html>"))
         self.label_3.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">学号：</span></p></body></html>"))
         self.label_4.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">专业：</span></p></body></html>"))
@@ -95,12 +82,6 @@ class Ui_MainWindow(object):
         self.label_9.setText(_translate("MainWindow", "<html><head/><body><p> </p></body></html>"))#学院
         self.label_10.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">状态：</span></p></body></html>"))
         self.label_11.setText(_translate("MainWindow", "<html><head/><body><p>等待检测</p></body></html>"))
-
-
-
-
-
-
 
         '''
         if (self.cap.isOpened()):
@@ -114,8 +95,6 @@ class Ui_MainWindow(object):
             self.image = QImage(img.data, width, height, bytesPerLine, QImage.Format_RGB888)
             self.label.setPixmap(QPixmap.fromImage(self.image).scaled(self.label.width(), self.label.height()))
         '''
-
-
 """
 pymysql.Connect()参数说明
 host(str):      MySQL服务器地址
@@ -141,7 +120,8 @@ rowcount()      返回数据条数或影响行数
 close()         关闭游标对象
 """
 
-conn = pymysql.connect(host='127.0.0.1',port=3306,user='root',passwd='1060800164',db="graduation",charset='utf8')
+# 连接本地数据库
+conn = pymysql.connect(host='127.0.0.1',port=3306,user='root',passwd=CONFIG.hostps,db="graduation",charset='utf8')
 cursor = conn.cursor()
 cap = cv2.VideoCapture(0)
 app = QtWidgets.QApplication(sys.argv)
@@ -150,7 +130,6 @@ ui = Ui_MainWindow()
 ui.setupUi(MainWindow)
 MainWindow.show()
 #sys.exit(app.exec_())
-
 
 def showcamera():
     while(1):
@@ -168,19 +147,19 @@ def showcamera():
 
 
 threads = []
-#线程一
+# 线程一
+# 该线程用于创建人脸检测窗口
 t1 = threading.Thread(target=classCheck2.checkface,args=(cap,ui,conn))
 threads.append(t1)
-#线程二
+# 线程二
+# 该线程用于人脸的拍摄和显示
 t2 = threading.Thread(target=showcamera)
 threads.append(t2)
 
-
-
 if __name__ == '__main__':
-
     for t in threads:
         t.setDaemon(False)
         t.start()
+    # 退出系统的时候需要等两个线程完成后才能退出
     sys.exit(app.exec_())
 

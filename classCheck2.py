@@ -10,40 +10,37 @@ from PyQt5.QtGui import QIcon, QFont, QPixmap, QPainter, QImage
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui  import *
-
+import CONFIG
 
 def checkface(capc,ui,conn):
-
     #i = 0
     global  failcount
     failcount = 0
-    picpath="G:/tiaozhanbei/baiduapi/checktest/test0"
-
+    picpath=CONFIG.test_face
     #cv2.imshow("capture", frame)
     time.sleep(5)
     while (1):
-
-        ui.label_11.setText("开始检测！")
+        ui.label_11.setText("开始检测!")
         #cv2.waitKey(0)
         time.sleep(1)
-        ret, frame = capc.read()
+        ret, frame= capc.read()
+        # print(frame)
+        # 将摄像头拍摄的图像进行保存
         cv2.imwrite(picpath+".jpg", frame)
-
         face_num = facecheck.fa_check((picpath+".jpg"))
 
-
         if(face_num>0):
-            ui.label_11.setText("检测成功，开始拍照！")
+            ui.label_11.setText("检测成功,开始拍照!")
             time.sleep(2)
             ret, frame = capc.read()
             cv2.imwrite(picpath + ".jpg", frame)
-            face_num = facecheck.fa_check((picpath +  ".jpg"))
+            face_num = facecheck.fa_check((picpath + ".jpg"))
             print("总共有",face_num,"张人脸")
             if(face_num>0):
-                ui.label_11.setText("拍照成功，开始核实身份！")
+                ui.label_11.setText("拍照成功,开始核实身份!")
                 failcount = 0
-                classKQsearch.Classqiandao(picpath +  ".jpg",ui,conn)
-                print("下一个同学！")
+                classKQsearch.Classqiandao(picpath + ".jpg",ui,conn)
+                print("下一个同学!")
                 time.sleep(5)
                 continue
             else:
@@ -52,15 +49,12 @@ def checkface(capc,ui,conn):
                 time.sleep(5)
                 continue
         else:
-            print("检测不到人脸，5秒后重新检测")
-            os.remove(picpath + ".jpg")
-            time.sleep(5)
+            print("检测不到人脸，2秒后重新检测")
+            # os.remove(picpath + ".jpg")
+            time.sleep(2)
             continue
     #capc.release()
     #cv2.destroyAllWindows()
-
-
-
 
 '''
 def view(capv):

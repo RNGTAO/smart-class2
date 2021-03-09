@@ -1,24 +1,17 @@
 import urllib3
 import base64
 from urllib.parse import urlencode
-import cv2
 import CONFIG
 
+# 人脸检测，人脸识别模型部署在服务器上面
 def fa_check(picpath):
     access_token = CONFIG.access_token
-
-
     http=urllib3.PoolManager()
+    print(picpath)
     url='https://aip.baidubce.com/rest/2.0/face/v3/detect?access_token='+access_token
-
     f = open(picpath,'rb')
-
-
-
     img = base64.b64encode(f.read())
     params={'image':''+str(img,'utf-8')+'','image_type':'BASE64','face_field':'age,beauty,faceshape,gender,glasses'}
-
-
     params=urlencode(params)
     request=http.request('POST',
                           url,

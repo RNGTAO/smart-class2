@@ -4,7 +4,6 @@ import urllib.request
 import json
 import base64
 import ssl
-
 import CONFIG
 
 picf = "G:/tiaozhanbei/facetest/test0.jpg"
